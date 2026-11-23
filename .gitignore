@@ -1,0 +1,61 @@
+# --- Segredos ---
+.env
+*.env
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+authd.pass
+wazuh-install-files.tar
+wazuh-passwords.txt
+**/secrets/
+
+# --- Malware e ficheiros capturados pelos iscos (NUNCA versionar) ---
+**/downloads/
+**/binaries/
+**/bistreams/
+**/dl/
+*.exe
+*.dll
+*.bin
+
+# --- Logs e dados gerados ---
+*.log
+**/log/
+**/logs/
+**/tty/
+*.pcap
+*.pcapng
+*.sqlite
+*.sqlite3
+data/exports/*
+!data/exports/.gitkeep
+
+# --- Datasets públicos em bruto (instruções em datasets/README.md) ---
+datasets/raw/*
+!datasets/raw/.gitkeep
+
+# --- Imagens de VMs e ISOs ---
+*.iso
+*.qcow2
+*.vmdk
+*.vdi
+*.ova
+*.ovf
+*.utm/
+
+# --- Python e notebooks ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# --- Sistema e editores ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+~$*
