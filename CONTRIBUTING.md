@@ -28,7 +28,7 @@ docs(infra): documenta as redes virtuais [HPT-5]
 
 ## Pull requests
 
-1. Abrir o PR para `main` com a chave do Jira no título.
+1. Abrir o PR para `main` com a chave do Jira no título. Com mais de um commit, o GitHub propõe o nome da branch: substituam-no, porque o título passa a ser a mensagem do commit na `main`.
 2. A revisão por outro elemento do grupo é recomendada, sobretudo em configurações de segurança, mas não é obrigatória.
 3. Fazer merge com squash e apagar a branch.
 4. Mover a tarefa para "Concluído" no Jira.

@@ -1,7 +1,7 @@
 # 0001 – Trabalhar só em laboratório local
 
 - **Data:** 2026-11-23
-- **Estado:** aceite pelo grupo; falta a validação do professor (tarefa 3)
+- **Estado:** aceite pelo grupo e validada pelo professor (tarefa 3)
 
 ## Contexto
 
