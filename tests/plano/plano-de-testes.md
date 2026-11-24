@@ -2,7 +2,7 @@
 
 - **Tarefa:** 23 – Plano de testes ligado aos requisitos
 - **Responsável:** Lucas Bacco
-- **Versão:** 1.0 (24/11/2026)
+- **Versão:** 1.1 (24/11/2026)
 
 Este plano define os testes que provam que o laboratório cumpre os requisitos da secção 2.2 do relatório. Cada teste tem um identificador (T01 a T19), o requisito que verifica, os passos, o resultado esperado e a evidência a guardar.
 
@@ -15,10 +15,12 @@ O ambiente é o laboratório descrito no capítulo 3 do relatório:
 | VM-ATACANTE (Kali Linux) | Atacante | 10.10.30.10 | Lança os ataques e serve os ficheiros de teste |
 | VM-HONEYPOT | Honeynet | 10.10.10.10 | Cowrie, Dionaea e agente Wazuh |
 | VM-SIEM | Gestão | 10.10.20.10 | Wazuh (manager, indexer e dashboard) |
+| VM-FIREWALL | As três | 10.10.30.254, 10.10.10.254 e 10.10.20.254 | Gateway das três redes; aplica as regras R1 a R8 |
+| PC anfitrião | Gestão | 10.10.20.1 | Estação de administração |
 
 Os endereços são os do plano indicativo e devem ser trocados pelos reais quando o Francisco fechar a tarefa 5.
 
-**Ferramentas:** nmap, hydra, clientes SSH, Telnet, FTP e SMB (`smbclient`), `curl` e Metasploit na VM-ATACANTE; o dashboard e as ferramentas de linha de comando do Wazuh na VM-SIEM; `docker` na VM-HONEYPOT.
+**Ferramentas:** nmap, hydra, clientes SSH, Telnet, FTP e SMB (`smbclient`), `curl` e Metasploit na VM-ATACANTE; o dashboard e as ferramentas de linha de comando do Wazuh na VM-SIEM; `docker` na VM-HONEYPOT; `nft` na VM-FIREWALL.
 
 **Preparar antes de desligar a Internet** (fluxo R8):
 
@@ -29,8 +31,8 @@ Os endereços são os do plano indicativo e devem ser trocados pelos reais quand
 
 ## 2. Regras de execução
 
-1. Antes de cada ronda, criar snapshots das três VMs (tarefa 11).
-2. Durante os testes, as redes do laboratório não têm Internet. O fluxo R8 tem de estar desligado.
+1. Antes de cada ronda, criar snapshots das quatro VMs (tarefa 11).
+2. Durante os testes, as redes do laboratório não têm Internet. O fluxo R8 tem de estar desligado (placa NAT da VM-FIREWALL com o cabo desligado).
 3. Os ataques só partem da VM-ATACANTE e só visam a VM-HONEYPOT, exceto nos testes de isolamento (T15 a T17), que verificam precisamente o que tem de falhar.
 4. Cada teste termina com um de três resultados: **Passou**, **Falhou** ou **Bloqueado** (não foi possível executar).
 5. As evidências (capturas do dashboard, excertos de logs, resultados de comandos) vão para `tests/resultados/ronda-N/`, com o nome do teste (por exemplo, `T03-cowrie-comandos.png`). Nunca juntar amostras de malware ou ficheiros capturados: só os respetivos hashes.
@@ -39,7 +41,7 @@ Os endereços são os do plano indicativo e devem ser trocados pelos reais quand
 
 ## 3. Critérios de entrada e de saída
 
-**Para começar uma ronda** têm de estar concluídas as tarefas 9 (regras de isolamento), 14 (isolamento dos containers), 17 (agente Wazuh), 19 (dashboards), 20 (fluxo de ponta a ponta) e 39 (VM-ATACANTE).
+**Para começar uma ronda** têm de estar concluídas as tarefas 9 (regras de isolamento na VM-FIREWALL), 14 (isolamento dos containers), 17 (agente Wazuh), 19 (dashboards), 20 (fluxo de ponta a ponta) e 39 (VM-ATACANTE).
 
 **A ronda é aceite quando:**
 
@@ -220,10 +222,11 @@ O T18 é executado pelo Francisco e não pelo Guilherme, que configurou os conta
 #### T17 – Administração e Internet (R3, R4, R8)
 
 - **Passos:**
-  1. A partir da estação de administração, abrir o dashboard (443) e entrar por SSH na VM-SIEM e na VM-HONEYPOT.
+  1. A partir da estação de administração (PC anfitrião), abrir o dashboard (443) e entrar por SSH na VM-SIEM e na VM-HONEYPOT.
   2. Em cada VM, correr `curl -m 5 http://1.1.1.1`.
-- **Resultado esperado:** os acessos de administração funcionam (R3 e R4) e nenhuma VM chega à Internet durante os testes (R8 desligado).
-- **Evidência:** capturas dos acessos e resultado dos comandos.
+  3. Na VM-FIREWALL, correr `sudo nft list ruleset` e confirmar que as cadeias de entrada e de encaminhamento bloqueiam por omissão (`policy drop`).
+- **Resultado esperado:** os acessos de administração funcionam (R3 e R4), nenhuma VM chega à Internet durante os testes (R8 desligado) e a VM-FIREWALL bloqueia por omissão tudo o que não está na Tabela 6.
+- **Evidência:** capturas dos acessos, resultado dos comandos e excerto das regras da VM-FIREWALL.
 
 #### T18 – Configuração dos containers
 

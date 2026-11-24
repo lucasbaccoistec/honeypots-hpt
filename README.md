@@ -5,20 +5,21 @@ Grupo **Honeypots (HPT)**: Lucas Bacco (líder), Francisco Soares e Guilherme Ba
 
 ## Como funciona
 
-Tudo corre localmente, numa máquina anfitriã do grupo, **sem nada exposto à Internet**:
+Tudo corre localmente, em VirtualBox, no PC de uso diário de um elemento do grupo, **sem nada exposto à Internet**:
 
 - **Rede atacante:** uma máquina Kali simula a Internet e lança ataques controlados.
 - **Rede honeynet:** a VM-HONEYPOT corre, em Docker, os iscos **Cowrie** (SSH/Telnet) e **Dionaea** (SMB, HTTP, FTP…), mais o agente **Wazuh**.
 - **Rede de gestão:** a VM-SIEM corre o **Wazuh 4.14** all-in-one (manager, indexer e dashboard).
+- **VM-FIREWALL:** liga as três redes e só deixa passar o tráfego previsto nas regras R1 a R8.
 - **Datasets públicos:** ataques reais recolhidos por outros honeypots, convertidos e importados no Wazuh para análise.
 
-A decisão de trabalhar só em laboratório está registada em [docs/decisoes/0001-laboratorio-local.md](docs/decisoes/0001-laboratorio-local.md).
+As decisões estão em `docs/decisoes/`: trabalhar só em laboratório ([0001](docs/decisoes/0001-laboratorio-local.md)) e usar VirtualBox com uma VM-FIREWALL ([0002](docs/decisoes/0002-pc-do-laboratorio.md)).
 
 ## Estrutura
 
 | Pasta | Conteúdo | Tarefas | Responsável |
 |---|---|---|---|
-| `infra/` | Hipervisor, redes virtuais, regras de isolamento e hardening | 4–9, 11, 35, 39 | Francisco |
+| `infra/` | VirtualBox, redes virtuais, VM-FIREWALL, regras de isolamento e hardening | 4–9, 11, 35, 39, 47 | Francisco |
 | `sensors/` | Cowrie e Dionaea em Docker | 12–14, 36 | Guilherme |
 | `siem/` | Wazuh: decoders, regras, dashboards e agente | 15–19 | Lucas (agente: Guilherme) |
 | `datasets/` | Escolha, conversão e importação dos datasets públicos | 44–45 | Guilherme |
