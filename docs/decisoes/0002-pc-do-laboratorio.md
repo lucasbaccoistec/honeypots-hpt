@@ -11,7 +11,8 @@ O laboratório corre no PC de um elemento do grupo, que é de uso diário. O rel
 ## Decisão
 
 - O hipervisor é o **VirtualBox**, instalado sobre o sistema do PC. O Proxmox VE substituiria esse sistema, o que não é possível num PC de uso diário.
-- O VirtualBox isola as redes internas, mas não filtra o tráfego entre elas. Por isso, o laboratório passa a ter uma quarta VM, a **VM-FIREWALL**: Ubuntu Server com nftables, 1 vCPU, 1,5 GB de RAM e 10 GB de disco. É o gateway das três redes e aplica as regras R1 a R8.
+- O VirtualBox isola as redes internas, mas não filtra o tráfego entre elas. Por isso, o laboratório passa a ter uma quarta VM, a **VM-FIREWALL**: Ubuntu Server 24.04 LTS com nftables, 1 vCPU, 1,5 GB de RAM e 10 GB de disco. É o gateway das três redes e aplica as regras R1 a R8.
+- As VMs Ubuntu (VM-FIREWALL, VM-SIEM e VM-HONEYPOT) usam o Ubuntu Server 24.04 LTS, a versão mais recente suportada pelo Wazuh 4.14, que não suporta o 26.04.
 - As redes no VirtualBox ficam assim:
 
 | Rede | Tipo no VirtualBox | Endereços | Máquinas |

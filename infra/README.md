@@ -19,4 +19,6 @@ Plano de endereçamento indicativo (a confirmar na tarefa 5):
 
 A VM-FIREWALL é o gateway de cada rede. Durante as instalações tem uma quarta placa, em NAT, que é a única saída para a Internet; fora disso, essa placa fica com o cabo desligado.
 
+As VMs Ubuntu (VM-FIREWALL, VM-SIEM e VM-HONEYPOT) usam o Ubuntu Server 24.04 LTS, a versão mais recente suportada pelo Wazuh 4.14.
+
 Nenhuma VM usa placa em ponte. Depois das instalações, nenhuma destas redes tem saída para a Internet nem para a rede local da máquina anfitriã.
